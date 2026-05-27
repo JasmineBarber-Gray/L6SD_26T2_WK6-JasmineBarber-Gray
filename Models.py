@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import joblib
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -88,3 +89,30 @@ print("R2:", baseline_r2)
 print("\nBaseline vs Best Model Comparison")
 print("Baseline R2:", baseline_r2)
 print("Best Model R2:", results_df["R2 Score"].max())
+
+# Train best model on full dataset
+model = LinearRegression()
+model.fit(X_train_scaled, y_train)
+
+# Predictions
+train_pred = model.predict(X_train_scaled)
+test_pred = model.predict(X_test_scaled)
+
+# Metrics - TRAIN
+train_r2 = r2_score(y_train, train_pred)
+train_mae = mean_absolute_error(y_train, train_pred)
+
+# Metrics - TEST
+test_r2 = r2_score(y_test, test_pred)
+test_mae = mean_absolute_error(y_test, test_pred)
+
+print("Training R2:", train_r2)
+print("Training MAE:", train_mae)
+print("Testing R2:", test_r2)
+print("Testing MAE:", test_mae)
+
+# Save model
+joblib.dump(best_model, "best_car_purchase_model.pkl")
+
+# Save scaler
+joblib.dump(scaler, "car_purchase_scaler.pkl")
