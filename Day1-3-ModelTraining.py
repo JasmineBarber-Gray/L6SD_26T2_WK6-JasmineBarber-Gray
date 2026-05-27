@@ -1,3 +1,4 @@
+# Task A
 import pandas as pd
 
 # Load car dataset
@@ -31,4 +32,9 @@ print(numerical_columns)
 text_columns = df.select_dtypes(include=['object']).columns
 
 print(text_columns)
+
+# Task B
+# drop the columns that are not relevant for the analysis
+df = df.drop(["Customer Name", "Customer e-mail", "Country"], axis=1)
+
 
