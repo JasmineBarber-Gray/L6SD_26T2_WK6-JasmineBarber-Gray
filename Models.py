@@ -70,9 +70,21 @@ best_model = results_df.sort_values(by="R2 Score", ascending=False).iloc[0]
 print("Best Model:")
 print(best_model)
 
-# New customer prediction
-new_customer = [[1, 35, 90000, 5000, 200000]]
-new_customer_scaled = scaler.transform(new_customer)
+# Baseline prediction
+baseline_pred = np.full_like(y_test, y_train.mean())
 
-print("Prediction (Random Forest):",
-      models["Random Forest"].predict(new_customer_scaled)[0])
+# Evaluate baseline
+baseline_mae = mean_absolute_error(y_test, baseline_pred)
+baseline_mse = mean_squared_error(y_test, baseline_pred)
+baseline_rmse = np.sqrt(baseline_mse)
+baseline_r2 = r2_score(y_test, baseline_pred)
+
+print("Baseline Results")
+print("MAE:", baseline_mae)
+print("RMSE:", baseline_rmse)
+print("R2:", baseline_r2)
+
+# Comparison
+print("\nBaseline vs Best Model Comparison")
+print("Baseline R2:", baseline_r2)
+print("Best Model R2:", results_df["R2 Score"].max())
