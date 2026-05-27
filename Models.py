@@ -4,11 +4,14 @@ import numpy as np
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
+
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
+
+from sklearn.metrics import mean_absolute_error, r2_score
 
 # Load dataset
 df = pd.read_excel(r"C:\Users\DELL 5520\Downloads\Car_Purchasing_Data.xlsx")
@@ -52,33 +55,18 @@ models = {
     "KNN": KNeighborsRegressor(n_neighbors=5)
 }
 
-# Bias Column
-X_train = np.c_[np.ones(X_train.shape[0]), X_train]
-X_test = np.c_[np.ones(X_test.shape[0]), X_test]
+# Train and evaluate models
+for name, model in models.items():
+    model.fit(X_train_scaled, y_train)
+    preds = model.predict(X_test_scaled)
 
-# linear regression using normal equation
-# θ = (X^T X)^-1 X^T y
-theta = np.linalg.inv(X_train_scaled.T @ X_train_scaled) @ X_train_scaled.T @ y_train
-
-# Predict on test set
-y_pred = X_test @ theta
-
-# Evaluate model
-mae = np.mean(np.abs(y_test - y_pred))
-mse = np.mean((y_test - y_pred) ** 2)
-r2 = 1 - (np.sum((y_test - y_pred)**2) / np.sum((y_test - np.mean(y_test))**2))
-
-print("MAE:", mae)
-print("MSE:", mse)
-print("R2:", r2)
-
-# new customer prediction
-new_customer = np.array([[1, 35, 90000, 5000, 200000]])
-
+    print("\n", name)
+    print("MAE:", mean_absolute_error(y_test, preds))
+    print("R2:", r2_score(y_test, preds))
+    
+# new customer Prediction
+new_customer = [[1, 35, 90000, 5000, 200000]]
 new_customer_scaled = scaler.transform(new_customer)
 
-new_customer_scaled = np.c_[np.ones(1), new_customer_scaled]
-
-prediction = new_customer_scaled @ theta
-
-print("Predicted Car Purchase Amount:", prediction[0])
+print("Prediction (Random Forest):",
+      models["Random Forest"].predict(new_customer_scaled)[0])
