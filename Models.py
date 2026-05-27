@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -190,4 +191,45 @@ plt.ylabel("Frequency")
 plt.legend()
 plt.grid(True)
 
+plt.show()
+
+# Correlation Heatmap
+plt.figure(figsize=(8,6))
+sns.heatmap(df.corr(), annot=True, cmap="coolwarm")
+plt.title("Feature Correlation Heatmap")
+plt.show()
+
+# Model Performance Comparison
+results_df.plot(
+    x="Model",
+    y=["MAE", "RMSE"],
+    kind="bar",
+    figsize=(10,6)
+)
+
+plt.title("Model Performance Comparison")
+plt.xticks(rotation=45)
+plt.show()
+
+# Distribution of Car Purchase Amount
+plt.figure(figsize=(8,6))
+plt.hist(df["Car Purchase Amount"], bins=20, edgecolor="black")
+
+plt.title("Distribution of Car Purchase Amount")
+plt.xlabel("Car Purchase Amount")
+plt.ylabel("Frequency")
+
+plt.show()
+
+# Feature Importance (Random Forest)
+model = models["Random Forest"]
+
+importances = model.feature_importances_
+features = X.columns
+
+plt.figure(figsize=(8,6))
+plt.barh(features, importances)
+
+plt.title("Feature Importance (Random Forest)")
+plt.xlabel("Importance")
 plt.show()
