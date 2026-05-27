@@ -33,8 +33,14 @@ text_columns = df.select_dtypes(include=['object']).columns
 
 print(text_columns)
 
+
 # Task B
 # drop the columns that are not relevant for the analysis
 df = df.drop(["Customer Name", "Customer e-mail", "Country"], axis=1)
 
+# display the unique values in the "Gender" column
+print(df["Gender"].unique())
+
+# display the count of each unique value
+print(df.describe())
 
