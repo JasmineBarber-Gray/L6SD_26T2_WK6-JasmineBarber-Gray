@@ -68,9 +68,17 @@ results_df = pd.DataFrame(results, columns=["Model", "MAE", "RMSE", "R2 Score"])
 results_df
 
 # find best model based on R2 Score
-best_model = results_df.sort_values(by="R2 Score", ascending=False).iloc[0]
+# Find best model name
+best_model_name = results_df.sort_values(
+    by="R2 Score",
+    ascending=False
+).iloc[0]["Model"]
+
 print("Best Model:")
-print(best_model)
+print(best_model_name)
+
+# Get actual trained model
+best_model = models[best_model_name]
 
 # Baseline prediction
 baseline_pred = np.full_like(y_test, y_train.mean())
