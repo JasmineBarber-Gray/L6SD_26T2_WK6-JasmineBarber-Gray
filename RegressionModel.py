@@ -10,7 +10,7 @@ df = df.drop(['Customer Name', 'Customer e-mail', 'Country'], axis=1)
 
 # Features and target
 # Features
-X = df[['Age', 'Annual Salary', 'Credit Card Debt', 'Net Worth']].values
+X = df[["Gender", "Age", "Annual Salary", "Credit Card Debt", "Net Worth"]].values
 
 # Target
 y = df['Car Purchase Amount'].values
@@ -49,11 +49,9 @@ print("MSE:", mse)
 print("R2:", r2)
 
 # new customer prediction
-new_customer = np.array([[35, 90000, 5000, 200000]])
+new_customer = np.array([[1, 35, 90000, 5000, 200000]])
 
 new_customer_scaled = (new_customer - X_min) / (X_max - X_min)
-
-new_customer_scaled = np.c_[np.ones(1), new_customer_scaled]
 
 prediction = new_customer_scaled @ theta
 
